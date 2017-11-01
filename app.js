@@ -12,10 +12,11 @@ var users = require('./routes/users');
 var item =  require('./routes/item');
 
 var app = express();
+var router = express.Router();
 
 // view engine setup
-// app.set('views', path.join(__dirname, 'views'));
-// app.set('view engine', 'jade');
+app.set('views', path.join(__dirname, 'views'));
+app.set('view engine', 'html');
 
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
@@ -23,19 +24,18 @@ app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
+app.use(router);
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/', function(req, res) {
-    res.sendFile(__dirname + "/views/index.html");
+app.use('/item', function (req, res) {
+    res.sendFile(__dirname + "/views/item.html");
 });
 
-app.use('/item', function (req, res, html) {
-    res.sendFile(path.join(__dirname+'/views/item.html'));
+//This must go last or else it will only redirect to
+//the homepage
+app.use('/', function(req, res) {
+     res.sendFile(__dirname + "/views/index.html");
 });
-//
-// app.get('/item', function (req, res, html) {
-//     res.send('item.html')
-// });
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
