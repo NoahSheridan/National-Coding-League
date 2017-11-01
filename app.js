@@ -61,7 +61,7 @@ var db = new sqlite3.Database('mydb.db');
 var check;
 db.serialize(function() {
 
-  db.run("CREATE TABLE if not exists user_info (info TEXT)");
+  db.run("CREATE TABLE if not exists user_info (name TEXT, developers TEXT, platform TEXT, version TEXT, price TEXT, )");
   var stmt = db.prepare("INSERT INTO user_info VALUES (?)");
   for (var i = 0; i < 10; i++) {
       stmt.run("Ipsum " + i);
