@@ -6,8 +6,8 @@ var router = express.Router();
 //     res.sendFile(__dirname + "/views/item.html");
 // });
 
-router.get('/item', function(req, res, next) {
-    res.render('item.html', { title: 'item' });
+router.get('/', function(req, res, next) {
+    res.render('item.html', { title: 'Item' });
 });
 
 module.exports = router;
