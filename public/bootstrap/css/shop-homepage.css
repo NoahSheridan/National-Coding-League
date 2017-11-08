@@ -14,3 +14,7 @@ body {
     /*og val 56*/
   }
 }
+
+.container {
+  width: 60%;
+}
