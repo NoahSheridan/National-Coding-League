@@ -37,6 +37,10 @@ app.use('/item', function (req, res) {
     res.sendFile(__dirname + "/views/item.html");
 });
 
+app.use('/login', function (req, res) {
+	res.sendFile(__dirname + "/views/login.html");
+});
+
 //This must go last or else it will only redirect to
 //the homepage
 app.use('/', function(req, res) {
