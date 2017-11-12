@@ -7,7 +7,7 @@ var router = express.Router();
 // });
 
 router.get('/', function(req, res, next) {
-    res.render(__dirname + 'item.html', { title: Login });
+    res.render(__dirname + 'login.html', { myTestVar:"Item Test Title", price:"$900" });
 });
 
 module.exports = router;
