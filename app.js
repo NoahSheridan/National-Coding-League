@@ -14,6 +14,13 @@ var item =  require('./routes/item');
 var app = express();
 var router = express.Router();
 
+var sqlite3 = require('sqlite3').verbose();
+let db = new sqlite3.Database('./users.db', sqlite3.OPEN_READWRITE, (err) => {
+	if (err) {
+		console.error(err.message);
+	}
+	console.log('Connected to database');
+});
 
 // view engine setup
 // app.set('views', path.join(__dirname, 'views'));
@@ -43,7 +50,39 @@ app.use('/login', function (req, res) {
 
 app.use('/register', function (req, res) {
 	res.sendFile(__dirname + "/views/register.html")
-})
+});
+
+app.post('/create_account', function(req, res) {
+	var name = req.body.name;
+	var company = req.body.company;
+	var email = req.body.email;
+	var password = req.body.password;
+	
+	db.run('INSERT INTO User(name, company, email, password) VALUES(?, ?, ?, ?)', [name, company, email, password], function(err) {
+		if (err) {
+			return console.log(err.message);
+		}
+		console.log('A new user has been added');
+	});
+	
+	res.sendFile(__dirname + "/views/login.html");
+});
+
+app.post('/sign_in', function(req, res) {
+	var email = req.body.email;
+	var password = req.body.password;
+	
+	db.each('Select rowid AS id, email, password FROM User', function(err, row) {
+		if (err) {
+			return console.log(err.message);
+		}
+		if (row.email == email && row.password == password) {
+			res.sendFile(__dirname + "/views/index.html");
+			return console.log('Login Successful');
+		}
+	});
+	console.log('User does not exist');
+});
 
 //This must go last or else it will only redirect to
 //the homepage
@@ -88,6 +127,5 @@ app.use(function(err, req, res, next) {
 //   });
 // });
 //
-// db.close();
 
 module.exports = app;
