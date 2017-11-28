@@ -49,7 +49,11 @@ app.use('/login', function (req, res) {
 });
 
 app.use('/register', function (req, res) {
-	res.sendFile(__dirname + "/views/register.html")
+	res.sendFile(__dirname + "/views/register.html");
+});
+
+app.use('/appsub', function (req, res) {
+	res.sendFile(__dirname + "/views/appsub.html");
 });
 
 app.post('/create_account', function(req, res) {
