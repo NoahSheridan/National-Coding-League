@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <meta name="description" content="">
+        <meta name="author" content="">
+
+        <!-- Bootstrap core CSS -->
+        <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+        <!-- Custom styles for this template -->
+        <link href="bootstrap/css/shop-homepage.css" rel="stylesheet">
+        
+        <!-- Custom styles for login page -->
+        <link href="stylesheets/register.css" rel="stylesheet">
+        
+        <title>Login</title>
+    </head>
+    <body>
+
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="/">NCL</a>
+            <form class="navbar-form" role="search">
+                <div class="input-group">
+                    <input type="text" class="form-control" name="srch-term" id="srch-term">
+                    <div class="input-group-btn">
+                        <button type="submit" class="btn btn-primary">Search</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </nav>
+
+	<div class="container">
+            <form action = "/app_submit" method="post" class="form-horizontal" role="form">
+                <h2>App Submission Request</h2>
+                <div class="form-group">
+                    <label for="appName" class="col-sm-3 control-label">Application Name</label>
+                    <div class="col-sm-9">
+                        <input type="text" id="appName" name="appName" placeholder="Application Name" class="form-control" autofocus>
+                    	<!-- <span class="help-block"></span> -->
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="companyName" class="col-sm-3 control-label">Developers</label>
+                    <div class="col-sm-9">
+                        <input type="text" id="developerNames" name="developers" placeholder="Developers" class="form-control" autofocus>
+                        <span class="help-block">Separate each developer name with a ","</span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="email" class="col-sm-3 control-label">Email</label>
+                    <div class="col-sm-9">
+                        <input type="email" id="email" name="email" placeholder="Email" class="form-control">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="password" class="col-sm-3 control-label">Password</label>
+                    <div class="col-sm-9">
+                        <input type="password" id="password" name="password" placeholder="Password" class="form-control">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-sm-3"><b>Sports Preference</b></label>
+                    <div class="col-sm-9">
+                        <div class="checkbox">
+                            <label>
+                                <input type="checkbox" id="footballCheckbox" value="football">Football
+                            </label>
+                        </div>
+                        <div class="checkbox">
+                            <label>
+                                <input type="checkbox" id="baseballCheckbox" value="baseball">Baseball
+                            </label>
+                        </div>
+                        <div class="checkbox">
+                            <label>
+                                <input type="checkbox" id="soccerCheckbox" value="soccer">Soccer
+                            </label>
+                        </div>
+                        <div class="checkbox">
+                            <label>
+                                <input type="checkbox" id="basketballCheckbox" value="basketball">Basketball
+                            </label>
+                        </div>
+                        <div class="checkbox">
+                            <label>
+                                <input type="checkbox" id="golfCheckbox" value="golf">Golf
+                            </label>
+                        </div>
+                        <div class="checkbox">
+                            <label>
+                                <input type="checkbox" id="allSportsCheckbox" value="allSprots">All
+                            </label>
+                        </div>
+                    </div>
+                </div> <!-- /.form-group -->
+                <div class="form-group">
+                    <label class="control-label col-sm-3"><b>Apps Preference</b></label>
+                    <div class="col-sm-9">
+                        <div class="checkbox">
+                            <label>
+                                <input type="checkbox" id="liveVideoCheckbox" value="liveVideo">Live Videos
+                            </label>
+                        </div>
+                        <div class="checkbox">
+                            <label>
+                                <input type="checkbox" id="newsCheckbox" value="news">News
+                            </label>
+                        </div>
+                        <div class="checkbox">
+                            <label>
+                                <input type="checkbox" id="blogCheckbox" value="blog">Blogs
+                            </label>
+                        </div>
+                        <div class="checkbox">
+                            <label>
+                                <input type="checkbox" id="gameCheckbox" value="game">Games
+                            </label>
+                        </div>
+                        <div class="checkbox">
+                            <label>
+                                <input type="checkbox" id="allAppsCheckbox" value="allApps">All
+                            </label>
+                        </div>
+                    </div>
+                </div> <!-- /.form-group -->
+                <div class="form-group">
+                    <div class="col-sm-9 col-sm-offset-3">
+                        <button id="register" type="submit" class="btn btn-primary btn-block">Register</button>
+                        <a href="/login" class="btn btn-primary btn-block">Login</a>
+                    </div>
+                </div>
+            </form> <!-- /form -->
+		</div> <!-- ./container -->
+
+    <!-- Footer -->
+    <footer class="py-5 bg-dark">
+        <div class="container">
+            <p class="m-0 text-center text-white">Copyright &copy; Sunday Night Coding 2017</p>
+        </div>
+        <!-- /.container -->
+    </footer>
+
+    <!-- Bootstrap core JavaScript -->
+    <script src="vendor/jquery/jquery.min.js"></script>
+    <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+    </body>
+</html>
