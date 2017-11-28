@@ -11,7 +11,8 @@
 
         <!-- Custom styles for this template -->
         <link href="bootstrap/css/shop-homepage.css" rel="stylesheet">
-        <title>Item</title>
+
+        <title><%= name %></title>
     </head>
     <body>
 
@@ -45,9 +46,10 @@
             <a href="item.html"><img class="card-img-top" src="http://placehold.it/700x400" alt=""></a>
         </div>
             <h1 align="center">
-                <%=include myTestVar %>
+                <%= name %>
             </h1>
         <h5 align="center">
+            Price:
             <%= price %>
         </h5>
 
@@ -76,6 +78,8 @@
     <!-- Bootstrap core JavaScript -->
     <script src="vendor/jquery/jquery.min.js"></script>
     <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="routes/item.js"></script>
+    <script src="app.js"></script>
 
     </body>
 </html>
