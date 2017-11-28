@@ -6,6 +6,7 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 
 var http = require('http');
+var ejs = require('ejs')
 
 var index = require('./routes/index');
 var users = require('./routes/users');
@@ -31,10 +32,53 @@ app.use(cookieParser());
 app.use(router);
 app.use(express.static(path.join(__dirname, 'public')));
 
+//Fake items to simulate database
+const items = [
+    {
+        name: "ESPN",
+        author: 'John',
+        rating: '&#9733; &#9733; &#9733; &#9733; &#9733;',
+        body: 'Description',
+        price: '$0.99'
+    },
+    {
+        name: 'Fantasy Football Simulator 2018',
+        author: 'Drake',
+        rating: '&#9733; &#9733; &#9734; &#9734; &#9734;',
+        body: 'Description',
+        price: '$1.99'
+    },
+    {
+        name: 'MLB Official Scoreboard',
+        author: 'Emma',
+        rating: '&#9733; &#9733; &#9733; &#9733; &#9734;',
+        body: 'Description',
+        price: '$0.99'
+    },
+    {
+        name: 'Cawlidge Hawkey',
+        author: 'Cody',
+        rating: '&#9733; &#9733; &#9733; &#9733; &#9733;',
+        body: 'Description',
+        price: '$2.99'
+    },
+    {
+        name: 'Sports r Neat',
+        author: 'Cody',
+        rating: '&#9733; &#9733; &#9733; &#9733; &#9733;',
+        body: 'Description',
+        price: '$1002.99'
+    }
+]
+
+
 //START ROUTING ====================================
 
-app.use('/item', function (req, res) {
-    res.sendFile(__dirname + "/views/item.html");
+app.use('/item', function (req, res){
+    console.log('Received ' + req.params.name + ' data');
+    const wanted = items.filter( function(item){return (item.name === req.params.name);} );
+    console.log(wanted.name + wanted.length);
+    res.render(__dirname + "/views/item.html", { name: items[0].name, price: items[0].price });
 });
 
 app.use('/login', function (req, res) {
@@ -48,7 +92,7 @@ app.use('/register', function (req, res) {
 //This must go last or else it will only redirect to
 //the homepage
 app.use('/', function(req, res) {
-     res.sendFile(__dirname + "/views/index.html");
+     res.render(__dirname + "/views/index.html", {items:items});
 });
 
 //END ROUTING ======================================
