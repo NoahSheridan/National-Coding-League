@@ -16,7 +16,7 @@ var app = express();
 var router = express.Router();
 
 var sqlite3 = require('sqlite3').verbose();
-let db = new sqlite3.Database('./users.db', sqlite3.OPEN_READWRITE, (err) => {
+let db = new sqlite3.Database('./ncldb2.db', sqlite3.OPEN_READWRITE, (err) => {
 	if (err) {
 		console.error(err.message);
 	}
@@ -102,11 +102,12 @@ app.use('/appsub', function (req, res) {
 
 app.post('/create_account', function(req, res) {
 	var name = req.body.name;
+	var username = req.body.user;
 	var company = req.body.company;
 	var email = req.body.email;
 	var password = req.body.password;
 	
-	db.run('INSERT INTO User(name, company, email, password) VALUES(?, ?, ?, ?)', [name, company, email, password], function(err) {
+	db.run('INSERT INTO members(full_name, username, company, email, password) VALUES(?, ?, ?, ?, ?)', [name, username, company, email, password], function(err) {
 		if (err) {
 			return console.log(err.message);
 		}
@@ -120,16 +121,48 @@ app.post('/sign_in', function(req, res) {
 	var email = req.body.email;
 	var password = req.body.password;
 	
-	db.each('Select rowid AS id, email, password FROM User', function(err, row) {
+	db.serialize(function() {
+		db.each('Select rowid AS id, email, password FROM members', function(err, row) {
+			if (err) {
+				return console.log(err.message);
+			}
+			if (row.email == email && row.password == password) {
+				res.render(__dirname + "/views/index.html", {items:items});
+				console.log('Login Successful');
+			}
+		});
+	});
+	console.log('User does not exist');
+});
+
+app.post('/app_submit', function(req, res) {
+	var user = req.body.user;
+	var appName = req.body.appName;
+	var developers = req.body.developers;
+	var version = req.body.version;
+	var link = req.body.link;
+	
+	db.serialize(function() {
+		db.each('Select rowid AS id, username FROM members', function(err, row) {
+			if (err) {
+				return console.log(err.message);
+			}
+			if (user == row.username) {
+				var member_id = row.id;
+			}
+		});
+	});
+	
+	db.serialize(function() {
+		db.run('INSERT INTO entry_requests(member_id, app_name, developers, platforms, versions, external_link, price, sport_id, app_type_id) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)')
+	})
+	db.run('INSERT INTO members(full_name, username, company, email, password) VALUES(?, ?, ?, ?, ?)', [name, username, company, email, password], function(err) {
 		if (err) {
 			return console.log(err.message);
 		}
-		if (row.email == email && row.password == password) {
-			res.sendFile(__dirname + "/views/index.html");
-			return console.log('Login Successful');
-		}
+		console.log('A new user has been added');
 	});
-	console.log('User does not exist');
+	
 });
 
 //This must go last or else it will only redirect to
