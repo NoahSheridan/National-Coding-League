@@ -15,14 +15,14 @@
         <!-- Custom styles for login page -->
         <link href="stylesheets/register.css" rel="stylesheet">
         
-        <title>Login</title>
+        <title>App Submission Request</title>
     </head>
     <body>
 
     <!-- Navigation -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
         <div class="container-fluid">
-            <a class="navbar-brand" href="/">NCL</a>
+            <a class="navbar-brand" href="/home">NCL</a>
             <form class="navbar-form" role="search">
                 <div class="input-group">
                     <input type="text" class="form-control" name="srch-term" id="srch-term">
@@ -35,8 +35,15 @@
     </nav>
 
 	<div class="container">
-            <form action = "/app_submit" method="post" class="form-horizontal" role="form">
+            <form action = "/app_submit" method="post" encType="multipart/form-data" class="form-horizontal" role="form">
                 <h2>App Submission Request</h2>
+                <div class="form-group">
+                    <label for="appName" class="col-sm-3 control-label">Username</label>
+                    <div class="col-sm-9">
+                        <input type="text" id="userName" name="user" placeholder="Username" class="form-control" autofocus>
+                    	<!-- <span class="help-block"></span> -->
+                    </div>
+                </div>
                 <div class="form-group">
                     <label for="appName" class="col-sm-3 control-label">Application Name</label>
                     <div class="col-sm-9">
@@ -45,26 +52,37 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="companyName" class="col-sm-3 control-label">Developers</label>
+                    <label for="developerNames" class="col-sm-3 control-label">Developers</label>
                     <div class="col-sm-9">
                         <input type="text" id="developerNames" name="developers" placeholder="Developers" class="form-control" autofocus>
-                        <span class="help-block">Separate each developer name with a ","</span>
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="email" class="col-sm-3 control-label">Email</label>
+                    <label for="platformName" class="col-sm-3 control-label">Platform</label>
                     <div class="col-sm-9">
-                        <input type="email" id="email" name="email" placeholder="Email" class="form-control">
+                        <input type="text" id="platformName" name="platform" placeholder="Platform" class="form-control" autofocus>
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="password" class="col-sm-3 control-label">Password</label>
+                    <label for="version" class="col-sm-3 control-label">Version</label>
                     <div class="col-sm-9">
-                        <input type="password" id="password" name="password" placeholder="Password" class="form-control">
+                        <input type="text" id="version" name="version" placeholder="Version" class="form-control" autofocus>
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="control-label col-sm-3"><b>Sports Preference</b></label>
+                    <label for="version" class="col-sm-3 control-label">Price</label>
+                    <div class="col-sm-9">
+                        <input type="text" id="appPrice" name="price" placeholder="price" class="form-control" autofocus>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="externalLink" class="col-sm-3 control-label">External Link</label>
+                    <div class="col-sm-9">
+                        <input type="text" id="externalLink" name="link" placeholder="External Link" class="form-control" autofocus>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-sm-3"><b>Sport Type</b></label>
                     <div class="col-sm-9">
                         <div class="checkbox">
                             <label>
@@ -99,7 +117,7 @@
                     </div>
                 </div> <!-- /.form-group -->
                 <div class="form-group">
-                    <label class="control-label col-sm-3"><b>Apps Preference</b></label>
+                    <label class="control-label col-sm-3"><b>App Type</b></label>
                     <div class="col-sm-9">
                         <div class="checkbox">
                             <label>
@@ -130,8 +148,7 @@
                 </div> <!-- /.form-group -->
                 <div class="form-group">
                     <div class="col-sm-9 col-sm-offset-3">
-                        <button id="register" type="submit" class="btn btn-primary btn-block">Register</button>
-                        <a href="/login" class="btn btn-primary btn-block">Login</a>
+                        <button id="register" type="submit" class="btn btn-primary btn-block">Submit Request</button>
                     </div>
                 </div>
             </form> <!-- /form -->

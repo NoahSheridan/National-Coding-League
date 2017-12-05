@@ -17,7 +17,7 @@ var app = express();
 var router = express.Router();
 
 var sqlite3 = require('sqlite3').verbose();
-let db = new sqlite3.Database('./users.db', sqlite3.OPEN_READWRITE, (err) => {
+let db = new sqlite3.Database('./ncldb2.db', sqlite3.OPEN_READWRITE, (err) => {
 	if (err) {
 		console.error(err.message);
 	}
@@ -99,13 +99,24 @@ app.use('/appsub', function (req, res) {
 	res.sendFile(__dirname + "/views/appsub.html");
 });
 
+app.use('/home', function (req, res) {
+	res.render(__dirname + "/views/indexLoggedIn.html", {items:items});
+});
+
+app.use('/admin_home', function (req, res) {
+	res.render(__dirname + "/views/indexAdmin.html", {items:items});
+});
+
 app.post('/create_account', function(req, res) {
 	var name = req.body.name;
+	var username = req.body.user;
 	var company = req.body.company;
 	var email = req.body.email;
 	var password = req.body.password;
+	var administrator = 0;
+	var login = false;
 	
-	db.run('INSERT INTO User(name, company, email, password) VALUES(?, ?, ?, ?)', [name, company, email, password], function(err) {
+	db.run('INSERT INTO members(full_name, username, company, email, password, administrator) VALUES(?, ?, ?, ?, ?, ?)', [name, username, company, email, password, administrator], function(err) {
 		if (err) {
 			return console.log(err.message);
 		}
@@ -119,16 +130,26 @@ app.post('/sign_in', function(req, res) {
 	var email = req.body.email;
 	var password = req.body.password;
 	
-	db.each('Select rowid AS id, email, password FROM User', function(err, row) {
-		if (err) {
-			return console.log(err.message);
-		}
-		if (row.email == email && row.password == password) {
-			res.sendFile(__dirname + "/views/index.html");
-			return console.log('Login Successful');
-		}
+	db.serialize(function() {
+		db.each('Select rowid AS id, email, password, administrator FROM members', function(err, row) {
+			if (err) {
+				return console.log(err.message);
+			}
+			if (row.email == email && row.password == password && row.administrator == 0) {
+				login = true;
+				res.render(__dirname + "/views/indexLoggedIn.html", {items:items, username:username});
+				return console.log('Login Successful');
+			}
+			if (row.email == email && row.password == password && row.administrator == 1) {
+				login = true;
+				res.render(__dirname + "/views/indexAdmin.html", {items:items});
+				return console.log('Admin Login Successful');
+			}
+		});
 	});
-	console.log('User does not exist');
+	if (login == false) {
+		res.sendFile(__dirname + "/views/login.html")
+	}
 });
 
 //This must go last or else it will only redirect to
