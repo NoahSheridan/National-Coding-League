@@ -100,14 +100,24 @@ app.use('/appsub', function (req, res) {
 	res.sendFile(__dirname + "/views/appsub.html");
 });
 
+app.use('/home', function (req, res) {
+	res.render(__dirname + "/views/indexLoggedIn.html", {items:items});
+});
+
+app.use('/admin_home', function (req, res) {
+	res.render(__dirname + "/views/indexAdmin.html", {items:items});
+});
+
 app.post('/create_account', function(req, res) {
 	var name = req.body.name;
 	var username = req.body.user;
 	var company = req.body.company;
 	var email = req.body.email;
 	var password = req.body.password;
+	var administrator = 0;
+	var login = false;
 	
-	db.run('INSERT INTO members(full_name, username, company, email, password) VALUES(?, ?, ?, ?, ?)', [name, username, company, email, password], function(err) {
+	db.run('INSERT INTO members(full_name, username, company, email, password, administrator) VALUES(?, ?, ?, ?, ?, ?)', [name, username, company, email, password, administrator], function(err) {
 		if (err) {
 			return console.log(err.message);
 		}
@@ -122,47 +132,25 @@ app.post('/sign_in', function(req, res) {
 	var password = req.body.password;
 	
 	db.serialize(function() {
-		db.each('Select rowid AS id, email, password FROM members', function(err, row) {
+		db.each('Select rowid AS id, email, password, administrator FROM members', function(err, row) {
 			if (err) {
 				return console.log(err.message);
 			}
-			if (row.email == email && row.password == password) {
-				res.render(__dirname + "/views/index.html", {items:items});
-				console.log('Login Successful');
+			if (row.email == email && row.password == password && row.administrator == 0) {
+				login = true;
+				res.render(__dirname + "/views/indexLoggedIn.html", {items:items, username:username});
+				return console.log('Login Successful');
+			}
+			if (row.email == email && row.password == password && row.administrator == 1) {
+				login = true;
+				res.render(__dirname + "/views/indexAdmin.html", {items:items});
+				return console.log('Admin Login Successful');
 			}
 		});
 	});
-	console.log('User does not exist');
-});
-
-app.post('/app_submit', function(req, res) {
-	var user = req.body.user;
-	var appName = req.body.appName;
-	var developers = req.body.developers;
-	var version = req.body.version;
-	var link = req.body.link;
-	
-	db.serialize(function() {
-		db.each('Select rowid AS id, username FROM members', function(err, row) {
-			if (err) {
-				return console.log(err.message);
-			}
-			if (user == row.username) {
-				var member_id = row.id;
-			}
-		});
-	});
-	
-	db.serialize(function() {
-		db.run('INSERT INTO entry_requests(member_id, app_name, developers, platforms, versions, external_link, price, sport_id, app_type_id) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)')
-	})
-	db.run('INSERT INTO members(full_name, username, company, email, password) VALUES(?, ?, ?, ?, ?)', [name, username, company, email, password], function(err) {
-		if (err) {
-			return console.log(err.message);
-		}
-		console.log('A new user has been added');
-	});
-	
+	if (login == false) {
+		res.sendFile(__dirname + "/views/login.html")
+	}
 });
 
 //This must go last or else it will only redirect to
