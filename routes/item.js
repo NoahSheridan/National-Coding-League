@@ -6,10 +6,11 @@ var router = express.Router();
 //     res.sendFile(__dirname + "/views/item.html");
 // });
 
-var test = "TESTTETETFBFJHSVJ"
+var test = "Test Object Name";
 
-router.get('/item', function(req, res, next) {
-    res.render(__dirname + 'item.html', { name:test, price:"$900" });
+router.get('/item', function(req, res) {
+    console.log("item.js route used")
+    res.render(__dirname + '/views/item.html', { name:test, price:"$900" });
 });
 
 module.exports = router;
