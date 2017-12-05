@@ -1,12 +1,23 @@
 var expect = require("chai").expect;
-var AppCount = require('app-count')
+var assert = require('assert');
+var base_url = "http://localhost:3000/";
+var userTest = require("../userTest.js");
+var user = {name: "Test"};
 
-describe('Member App Count', function(){
-it("getSubtotal() should return 0 before a member saves any apps", function(){
-	var appCount = new AppCount([]);
-	expect(appCount.getSubtotal()).to.equal(0);
+describe('Database', function(){
+	it('Should show that database is functional', function(){
+		});
+});
+
+
+describe('Homepage', function(){
+	it('should have name National Coding League', function(){
+		expect(user).to.have.property('name');
 	});
 });
+
+
+		
 
 
 
