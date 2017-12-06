@@ -130,6 +130,7 @@ app.post('/create_account', function(req, res) {
 app.post('/sign_in', function(req, res) {
 	var email = req.body.email;
 	var password = req.body.password;
+	var login = false;
 	
 	db.serialize(function() {
 		db.each('Select rowid AS id, email, password, administrator FROM members', function(err, row) {
@@ -138,7 +139,7 @@ app.post('/sign_in', function(req, res) {
 			}
 			if (row.email == email && row.password == password && row.administrator == 0) {
 				login = true;
-				res.render(__dirname + "/views/indexLoggedIn.html", {items:items, username:username});
+				res.render(__dirname + "/views/indexLoggedIn.html", {items:items});
 				return console.log('Login Successful');
 			}
 			if (row.email == email && row.password == password && row.administrator == 1) {
