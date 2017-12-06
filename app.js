@@ -43,35 +43,40 @@ const items = [
         author: 'John',
         rating: '&#9733; &#9733; &#9733; &#9733; &#9733;',
         body: 'Description',
-        price: '$0.99'
+        price: '$0.99',
+        image: 'http://a1.espncdn.com/combiner/i?img=%2Fi%2Fespn%2Fespn_logos%2Fespn_red.png'
     },
     {
         name: 'Fantasy Football Simulator 2018',
         author: 'Drake',
         rating: '&#9733; &#9733; &#9734; &#9734; &#9734;',
         body: 'Description',
-        price: '$1.99'
+        price: '$1.99',
+        image: 'https://support.espn.com/resource/ESPN_Common/images/badges/Fantasy-Football-badge.png?1'
     },
     {
         name: 'MLB Official Scoreboard',
         author: 'Emma',
         rating: '&#9733; &#9733; &#9733; &#9733; &#9734;',
         body: 'Description',
-        price: '$0.99'
+        price: '$0.99',
+        image: 'http://sportycious.com/wp-content/uploads/2016/12/MLB1.png'
     },
     {
         name: 'Cawlidge Hawkey',
         author: 'Cody',
         rating: '&#9733; &#9733; &#9733; &#9733; &#9733;',
         body: 'Description',
-        price: '$2.99'
+        price: '$2.99',
+        image: ''
     },
     {
         name: 'Sports r Neat',
         author: 'Cody',
         rating: '&#9733; &#9733; &#9733; &#9733; &#9733;',
         body: 'Description',
-        price: '$1002.99'
+        price: '$1002.99',
+        image: ''
     }
 ]
 
@@ -82,7 +87,7 @@ app.use('/item', function (req, res){
     console.log('Received ' + req.params.name + ' data');
     const wanted = items.filter( function(item){return (item.name === req.params.name);} );
     console.log(wanted.name + wanted.length);
-    res.render(__dirname + "/views/item.html", { name: items[0].name, price: items[0].price });
+    res.render(__dirname + "/views/item.html", { name: items[0].name, price: items[0].price, image: items[0].image });
 });
 
 //app.use('/item', item);
