@@ -44,13 +44,21 @@ db.serialize(function() {
 	});
 });
 
+var comments = [];
+
+db.serialize(function() {
+	db.each("Select rowid AS id, comment FROM comments", function(err, row)  {
+		comments.push({comment: row.comment})
+	})
+})
+
 //START ROUTING ====================================
 
 app.use('/item', function (req, res){
     console.log('Received ' + req.params.name + ' data');
     const wanted = items.filter( function(item){return (item.name === req.params.name);} );
     console.log(wanted.name + wanted.length);
-    res.render(__dirname + "/views/item.html", { name: items[0].name, price: items[0].price, image: items[0].image });
+    res.render(__dirname + "/views/item.html", { comments: comments, name: items[0].name, price: items[0].price, image: items[0].image, developers: items[0].developers, platforms: items[0].platforms, versions: items[0].versions, link: items[0].link });
 });
 
 //app.use('/item', item);
@@ -73,6 +81,21 @@ app.use('/home', function (req, res) {
 
 app.use('/admin_home', function (req, res) {
 	res.render(__dirname + "/views/indexAdmin.html", {items:items});
+});
+
+app.post('/comment', function(req, res) {
+	var comment = req.body.appComment;
+	
+	db.run('INSERT INTO comments(comment) VALUES(?)', [comment], function(err) {
+		if (err) {
+			return console.log(err.message);
+		}
+		console.log('Comment has been added');
+	});
+	console.log('Received ' + req.params.name + ' data');
+    const wanted = items.filter( function(item){return (item.name === req.params.name);} );
+    console.log(wanted.name + wanted.length);
+    res.render(__dirname + "/views/item.html", { comments:comments, name: items[0].name, price: items[0].price, image: items[0].image, developers: items[0].developers, platforms: items[0].platforms, versions: items[0].versions, link: items[0].link });
 });
 
 app.post('/create_account', function(req, res) {

@@ -54,24 +54,34 @@
         </h5>
 
         <p1 align="center">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque dignissim tortor a enim accumsan,
-            ac vestibulum mi volutpat. Nam quis risus nulla. Etiam pulvinar tempor sem sit amet fermentum. Ut odio
-            velit, laoreet et congue quis, gravida vel purus. Sed aliquam in neque egestas fringilla. Sed ut aliquet
-            magna. Ut at diam malesuada, lacinia enim porta, vehicula lacus. Vivamus in nibh congue orci eleifend
-            consectetur. Integer quis consequat tellus. Sed gravida purus metus, non molestie erat iaculis non.
-            Pellentesque eget est vestibulum, dictum metus sed, elementum felis. Duis sollicitudin odio vel lacus
-            congue, ullamcorper ultricies massa sodales. Nullam vitae est mauris. Curabitur id ex nec erat lobortis
-            rutrum et non dolor. Proin vitae tellus sed nibh tempor tempor vel sed es
-        </p1>
+            Developers: <%= developers %>
+        </p1> <br>
+        <p1 align="center">
+        	Platforms: <%= platforms %>
+        </p1> <br>
+        <p1 align="center">
+        	Version: <%= versions %>
+        </p1> <br>
+        <p1 align="center">
+        	External Link: <%= link %>
+        </p1> <br>
 
         <div class="container">
-        <form>
+        <form action = "/comment" method="post">
         <div class="form-group">
             <label for="comment">Comment:</label>
-            <textarea class="form-control" rows="5" id="comment"></textarea>
+            <textarea class="form-control" name="appComment" rows="5" id="comment"></textarea>
             <button type="submit" class="btn btn-primary">Submit</button>
             </div>
         </form>
+        </div>
+        
+        <div class="container">
+            <% comments.forEach((comment) => { %>
+            <p1 align="center">
+            	<%= comment.comment %>
+            </p1><br>
+            <% }) %>
         </div>
 
     </div>
