@@ -36,50 +36,13 @@ app.use(cookieParser());
 app.use(router);
 app.use(express.static(path.join(__dirname, 'public')));
 
-//Fake items to simulate database
-const items = [
-    {
-        name: "ESPN",
-        author: 'John',
-        rating: '&#9733; &#9733; &#9733; &#9733; &#9733;',
-        body: 'Description',
-        price: '$0.99',
-        image: 'http://a1.espncdn.com/combiner/i?img=%2Fi%2Fespn%2Fespn_logos%2Fespn_red.png'
-    },
-    {
-        name: 'Fantasy Football Simulator 2018',
-        author: 'Drake',
-        rating: '&#9733; &#9733; &#9734; &#9734; &#9734;',
-        body: 'Description',
-        price: '$1.99',
-        image: 'https://support.espn.com/resource/ESPN_Common/images/badges/Fantasy-Football-badge.png?1'
-    },
-    {
-        name: 'MLB Official Scoreboard',
-        author: 'Emma',
-        rating: '&#9733; &#9733; &#9733; &#9733; &#9734;',
-        body: 'Description',
-        price: '$0.99',
-        image: 'http://sportycious.com/wp-content/uploads/2016/12/MLB1.png'
-    },
-    {
-        name: 'Cawlidge Hawkey',
-        author: 'Cody',
-        rating: '&#9733; &#9733; &#9733; &#9733; &#9733;',
-        body: 'Description',
-        price: '$2.99',
-        image: ''
-    },
-    {
-        name: 'Sports r Neat',
-        author: 'Cody',
-        rating: '&#9733; &#9733; &#9733; &#9733; &#9733;',
-        body: 'Description',
-        price: '$1002.99',
-        image: ''
-    }
-]
+var items = [];
 
+db.serialize(function() {
+	db.each("Select rowid AS id, app_name, developers, platforms, versions, external_link, price, status, image_link FROM entries", function(err, row) {
+		items.push({name: row.app_name, developers: row.developers, platforms: row.platforms, price: row.price, versions: row.versions, link: row.external_link, image: row.image_link});
+	});
+});
 
 //START ROUTING ====================================
 
@@ -129,6 +92,28 @@ app.post('/create_account', function(req, res) {
 	});
 	
 	res.sendFile(__dirname + "/views/login.html");
+});
+
+app.post('/app_submit', function(req, res) {
+	var username = req.body.userName;
+	var appname = req.body.appName;
+	var developers = req.body.developerNames;
+	var platform = req.body.platformName
+	var version = req.body.version;
+	var price = req.body.appPrice;
+	var link = req.body.externalLink;
+	var sportType = 0;
+	var appType = 0;
+	var memberID = 0;
+	
+	db.run('INSERT INTO entry_requests(member_id, app_name, developers, platforms, versions, external_link, price, sport_id, app_type_id) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)', [memberID, appname, developers, platform, version, link, price, sportType, appType], function(err) {
+		if (err) {
+			return console.log(err.message);
+		}
+		console.log('An app has been submitted for request');
+	});
+	
+	res.render(__dirname + "/views/indexLoggedIn.html", {items:items});
 });
 
 app.post('/sign_in', function(req, res) {
