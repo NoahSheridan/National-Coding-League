@@ -10,8 +10,7 @@ var ejs = require('ejs')
 
 var index = require('./routes/index.js');
 var users = require('./routes/users.js');
-//var item =  require('./routes/item.js');
-var item = require(__dirname + "/routes/item")
+var item =  require('./routes/item.js');
 
 var app = express();
 var router = express.Router();
@@ -40,28 +39,50 @@ var items = [];
 
 db.serialize(function() {
 	db.each("Select rowid AS id, app_name, developers, platforms, versions, external_link, price, status, image_link FROM entries", function(err, row) {
-		items.push({name: row.app_name, developers: row.developers, platforms: row.platforms, price: row.price, versions: row.versions, link: row.external_link, image: row.image_link});
+		items.push({name: row.app_name, 
+					developers: row.developers, 
+					platforms: row.platforms, 
+					price: row.price, 
+					versions: row.versions, 
+					link: row.external_link, 
+					image: row.image_link});
 	});
 });
-
-var comments = [];
-
-db.serialize(function() {
-	db.each("Select rowid AS id, comment FROM comments", function(err, row)  {
-		comments.push({comment: row.comment})
-	})
-})
 
 //START ROUTING ====================================
 
 app.use('/item', function (req, res){
-    console.log('Received ' + req.params.name + ' data');
-    const wanted = items.filter( function(item){return (item.name === req.params.name);} );
-    console.log(wanted.name + wanted.length);
-    res.render(__dirname + "/views/item.html", { comments: comments, name: items[0].name, price: items[0].price, image: items[0].image, developers: items[0].developers, platforms: items[0].platforms, versions: items[0].versions, link: items[0].link });
+	var comments = [];
+//	var count = 0;
+	
+//	console.log("item name " + req.params.id);
+//
+//	db.serialize(function() {
+//		db.each("Select rowid AS id, comment FROM comments", function(err, row)  {
+//			comments.push({comment: row.comment});
+//		});
+//	});
+	
+//	db.serialize(function() {
+//		db.each('Select rowid AS id, email, password, administrator FROM members', function(err, row) {
+//			if (err) {
+//				return console.log(err.message);
+//			}
+//			if (row.name == req.param.item) {
+//				return res.render(__dirname + "/views/item.html", { comments: comments, name: items[count].name, price: items[count].price, image: items[count].image, developers: items[count].developers, platforms: items[count].platforms, versions: items[count].versions, link: items[count].link });
+//			}
+//			else {
+//				count = count + 1;
+//			}
+//		});
+//	});
+	
+//    console.log('Received ' + req.params.name + ' data');
+//    const wanted = items.filter( function(item){return (item.name === req.params.name);} );
+//    console.log(wanted.name + wanted.length);
+    res.render(__dirname + "/views/item.html", {comments: comments, name: items[0].name, price: items[0].price, image: items[0].image, developers: items[0].developers, platforms: items[0].platforms, versions: items[0].versions, link: items[0].link });
 });
 
-//app.use('/item', item);
 
 app.use('/login', function (req, res) {
 	res.sendFile(__dirname + "/views/login.html");
@@ -145,6 +166,7 @@ app.post('/sign_in', function(req, res) {
 	var login = false;
 	
 	db.serialize(function() {
+		//change to db.get() for better efficiency
 		db.each('Select rowid AS id, email, password, administrator FROM members', function(err, row) {
 			if (err) {
 				return console.log(err.message);
